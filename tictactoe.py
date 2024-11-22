@@ -7,27 +7,12 @@
 
 '''
 
-
 def initialize_board():
     # 1st approach
     return [["-" for i in range(3)] for j in range(3)]
 
-
-'''def print_board(board):
-    for row in board:    # row: ["-", "-", "-"]
-        for col in row:
-            print(col, end=" ")
-        print()'''
-
-
-'''def available_square(board, row, col):
-    return board[row][col] == '-'
-    '''
-
-
 def mark_square(board, row, col, chip_type):
     board[row][col] = chip_type
-
 
 def board_is_full(board):
     for row in board:
@@ -35,7 +20,6 @@ def board_is_full(board):
             if chip == "-":
                 return False
     return True
-
 
 def check_if_winner(board, chip_type):
     # check all rows
@@ -55,13 +39,22 @@ def check_if_winner(board, chip_type):
 
     return False
 
-
 # row: row index, col: col index
 def is_valid(board, row, col):
     if 0 <= row <= 2 and 0 <= col <= 2 and board[row][col] == '-':
         return True
     return False
 
+'''def print_board(board):
+    for row in board:    # row: ["-", "-", "-"]
+        for col in row:
+            print(col, end=" ")
+        print()'''
+
+
+'''def available_square(board, row, col):
+    return board[row][col] == '-'
+    '''
 
 '''if __name__ == "__main__":
     # main logic
@@ -102,5 +95,3 @@ def is_valid(board, row, col):
         player = 2 if player == 1 else 1
         chip = 'o' if chip == 'x'else 'x'
         '''
-
-
