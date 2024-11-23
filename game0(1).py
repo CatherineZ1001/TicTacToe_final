@@ -33,7 +33,7 @@ small_font = pygame.font.Font(None, 36)
 
 
 # set up the mode choice page
-def mode_button():
+def mode_page():
     # button area
     three_button = pygame.Rect(150, 100, 300, 80)
     four_button = pygame.Rect(150, 200, 300, 80)
