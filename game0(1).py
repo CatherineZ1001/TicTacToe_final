@@ -31,6 +31,67 @@ def music():
 font = pygame.font.Font(None, 50)
 small_font = pygame.font.Font(None, 36)
 
+
+# set up the mode choice page
+def mode_button():
+    # button area
+    three_button = pygame.Rect(150, 100, 300, 80)
+    four_button = pygame.Rect(150, 200, 300, 80)
+    five_button = pygame.Rect(150, 300, 300, 80)
+    five_3player_button = pygame.Rect(150,400, 300, 80)
+    # button text
+    three_text = font.render("3*3", True, WHITE)
+    four_text = font.render("4*4", True, WHITE)
+    five_text = font.render("5*5 - 2 players", True, WHITE)
+    five_3player_text = font.render('5*5 - 3 players', True, WHITE)
+
+    running = True
+    while running:
+        screen.fill(BG_COLOR)
+
+        #draw button
+        pygame.draw.rect(screen, BLUE, three_button)
+        pygame.draw.rect(screen, BLACK, four_button)
+        pygame.draw.rect(screen, ORANGE, five_button)
+        pygame.draw.rect(screen, YELLOW, five_3player_button)
+
+        # center button text
+        screen.blit(three_text, (
+            three_button.x + (three_button.width - three_text.get_width()) // 2,
+            three_button.y + (three_button.height - three_text.get_height()) // 2,
+        ))
+        screen.blit(four_text, (
+            four_button.x + (four_button.width - four_text.get_width()) // 2,
+            four_button.y + (four_button.height - four_text.get_height()) // 2,
+        ))
+        screen.blit(five_text, (
+            five_button.x + (five_button.width - five_text.get_width()) // 2,
+            five_button.y + (five_button.height - five_text.get_height()) // 2,
+        ))
+        screen.blit(five_3player_text, (
+            five_3player_button.x + (five_3player_button.width - five_3player_text.get_width()) // 2,
+            five_3player_button.y + (five_3player_button.height - five_3player_text.get_height()) // 2,
+        ))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                return "QUIT"
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if three_button.collidepoint(event.pos):
+                    pass
+                elif four_button.collidepoint(event.pos):
+                    pass
+                    #return "SETTINGS"
+                elif five_button.collidepoint(event.pos):
+                    pass
+                elif five_3player_button.collidepoint(event.pos):
+                    pass
+
+        pygame.display.flip()
+
+
+
 # set up the start page
 def start_page():
     """
