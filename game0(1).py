@@ -14,7 +14,7 @@ pygame.display.set_caption("Tic Tac Toe!")
 
 # initialize the board
 board = initialize_board()
-
+small_font = pygame.font.Font(None, 36)
 
 # set up the BGM
 def music():
@@ -31,8 +31,7 @@ def music():
 font = pygame.font.Font(None, 50)
 small_font = pygame.font.Font(None, 36)
 
-
-# set up the mode choice page
+#change board size
 def mode_page():
     # button area
     three_button = pygame.Rect(150, 100, 300, 80)
@@ -79,10 +78,11 @@ def mode_page():
                 return "QUIT"
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if three_button.collidepoint(event.pos):
-                    pass
+                    return "GAME_START"
                 elif four_button.collidepoint(event.pos):
                     pass
                     #return "SETTINGS"
+                    #return
                 elif five_button.collidepoint(event.pos):
                     pass
                 elif five_3player_button.collidepoint(event.pos):
@@ -90,6 +90,11 @@ def mode_page():
 
         pygame.display.flip()
 
+
+def change_size():
+    pass
+    if pygame.mouse.get_pressed()[0]:
+        pass
 
 
 # set up the start page
