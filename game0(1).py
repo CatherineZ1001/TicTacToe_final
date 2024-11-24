@@ -77,24 +77,44 @@ def mode_page():
                 running = False
                 return "QUIT"
             if event.type == pygame.MOUSEBUTTONDOWN:
+                global game_mode
                 if three_button.collidepoint(event.pos):
-                    return "GAME_START"
+                    global result
+                    game_mode = "3*3"
+                    change_size()
+                    game()
                 elif four_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "4*4"
+                    change_size()
+                    game()
                     #return "SETTINGS"
-                    #return
                 elif five_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "5*5"
+                    change_size()
+                    game()
                 elif five_3player_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "3player"
+                    change_size()
+                    game()
 
         pygame.display.flip()
 
 
 def change_size():
-    pass
-    if pygame.mouse.get_pressed()[0]:
+    global BOARD_COLS, BOARD_ROWS
+    
+    if game_mode == "3*3":
+        BOARD_ROWS = 3
+        BOARD_COLS = 3
+    elif game_mode == "4*4":
+        BOARD_ROWS = 4
+        BOARD_COLS = 4
+    elif game_mode == "5*5":
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
+    elif game_mode == "3player":
         pass
+
 
 
 # set up the start page
@@ -134,7 +154,7 @@ def start_page():
                break
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
-                    return "START_GAME"
+                    return "MODE_PAGE"
                 elif settings_button.collidepoint(event.pos):
                     return "SETTINGS"
 
@@ -312,9 +332,11 @@ def main():
     while True:
         music()
         result = start_page()
+        if result == "MODE_PAGE":
+            mode_page()
         if result == "START_GAME":
-            game_page()
-        elif result == "SETTINGS":
+            game()
+        if result == "SETTINGS":
             settings_page()
         elif result == "QUIT":
             break
