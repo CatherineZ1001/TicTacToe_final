@@ -106,27 +106,27 @@ def start_page():
 
     running = True
     while running:
-        screen.fill(BG_COLOR)
+        #set screen color
+        screen.fill(WHITE)
 
         #draw button
         pygame.draw.rect(screen, BLUE, start_button)
         pygame.draw.rect(screen, ORANGE, settings_button)
 
-        # center button text
-        screen.blit(start_text, (
-            start_button.x + (start_button.width - start_text.get_width()) // 2,
-            start_button.y + (start_button.height - start_text.get_height()) // 2,
-        ))
-        screen.blit(settings_text, (
-            settings_button.x + (settings_button.width - settings_text.get_width()) // 2,
-            settings_button.y + (settings_button.height - settings_text.get_height()) // 2,
-        ))
+        # put start text to centre of the button
+        x_start_button = start_button.x + (start_button.width - start_text.get_width()) // 2
+        y_start_button = start_button.y + (start_button.height - start_text.get_height()) // 2
+        screen.blit(start_text, (x_start_button, y_start_button))
+
+        #put the settings text to the centre of the button
+        x_settings_button = settings_button.x + (settings_button.width - settings_text.get_width()) // 2
+        y_settings_button = settings_button.y + (settings_button.height - settings_text.get_height()) // 2
+        screen.blit(settings_text, (x_settings_button, y_settings_button))
 
         #event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                return "QUIT"
+               break
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
                     return "START_GAME"
@@ -134,7 +134,6 @@ def start_page():
                     return "SETTINGS"
 
         pygame.display.update()
-
 
 # set up the setting page
 def settings_page():
