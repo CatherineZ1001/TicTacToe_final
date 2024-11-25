@@ -9,7 +9,8 @@
 
 def initialize_board():
     # 1st approach
-    return [["-" for i in range(3)] for j in range(3)]
+    global BOARD_COLS, BOARD_ROWS
+    return [["-" for _ in range(BOARD_COLS)] for _ in range(BOARD_ROWS)]
 
 def mark_square(board, row, col, chip_type):
     board[row][col] = chip_type
