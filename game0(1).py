@@ -293,6 +293,7 @@ def normal_mode_page():
             )
 
         # Event handling
+        global game_mode
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -302,15 +303,15 @@ def normal_mode_page():
                 if buttons[0].collidepoint(event.pos):  # 3*3 button
                     game_mode = "3*3"
                     change_size()
-                    game()
+                    game_page()
                 if buttons[1].collidepoint(event.pos):  # 4*4 button
                     game_mode = "4*4"
                     change_size()
-                    game()
+                    game_page()
                 if buttons[2].collidepoint(event.pos):  # 5*5 button
                     game_mode = "5*5"
                     change_size()
-                    game()
+                    game_page()
 
         pygame.display.flip()
 
