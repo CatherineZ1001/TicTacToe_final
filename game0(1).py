@@ -99,23 +99,6 @@ def mode_page():
 
         pygame.display.flip()
         
-def change_size():
-    global BOARD_COLS, BOARD_ROWS, SQUARE_SIZE, board
-    if game_mode == "3*3":
-        BOARD_ROWS = 3
-        BOARD_COLS = 3
-    elif game_mode == "4*4":
-        BOARD_ROWS = 4
-        BOARD_COLS = 4
-    elif game_mode == "5*5":
-        BOARD_ROWS = 5
-        BOARD_COLS = 5
-    elif game_mode == "3player":
-        BOARD_ROWS = 5
-        BOARD_COLS = 5
-
-    SQUARE_SIZE = WIDTH // BOARD_COLS
-    board = initialize_board()
 
 
 # set up the start page
@@ -216,6 +199,24 @@ def settings_page():
                         pygame.mixer.music.play(-1)
 
         pygame.display.flip()
+        
+    def change_size():
+        global BOARD_COLS, BOARD_ROWS, SQUARE_SIZE, board
+        if game_mode == "3*3":
+            BOARD_ROWS = 3
+            BOARD_COLS = 3
+        elif game_mode == "4*4":
+            BOARD_ROWS = 4
+            BOARD_COLS = 4
+        elif game_mode == "5*5":
+            BOARD_ROWS = 5
+            BOARD_COLS = 5
+        elif game_mode == "3player":
+            BOARD_ROWS = 5
+            BOARD_COLS = 5
+
+        SQUARE_SIZE = WIDTH // BOARD_COLS
+        board = initialize_board()
 
 
 def mode_page():
