@@ -77,18 +77,45 @@ def mode_page():
                 running = False
                 return "QUIT"
             if event.type == pygame.MOUSEBUTTONDOWN:
+                global game_mode
                 if three_button.collidepoint(event.pos):
-                    pass
+                    global result
+                    game_mode = "3*3"
+                    change_size()
+                    game()
                 elif four_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "4*4"
+                    change_size()
+                    game()
                     #return "SETTINGS"
                 elif five_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "5*5"
+                    change_size()
+                    game()
                 elif five_3player_button.collidepoint(event.pos):
-                    pass
+                    game_mode = "3player"
+                    change_size()
+                    game()
 
         pygame.display.flip()
+        
+def change_size():
+    global BOARD_COLS, BOARD_ROWS, SQUARE_SIZE, board
+    if game_mode == "3*3":
+        BOARD_ROWS = 3
+        BOARD_COLS = 3
+    elif game_mode == "4*4":
+        BOARD_ROWS = 4
+        BOARD_COLS = 4
+    elif game_mode == "5*5":
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
+    elif game_mode == "3player":
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
 
+    SQUARE_SIZE = WIDTH // BOARD_COLS
+    board = initialize_board()
 
 
 # set up the start page
