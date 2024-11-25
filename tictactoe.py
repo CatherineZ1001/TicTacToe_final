@@ -23,6 +23,36 @@ def board_is_full(board):
     return True
 
 def check_if_winner(board, chip_type):
+    """Check for a winning condition on the board."""
+    winning_length = 3 if BOARD_ROWS <= 3 else 4 if BOARD_ROWS == 4 else 5
+
+    # Check rows for a win
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLS - winning_length + 1):
+            if all(board[row][col + offset] == chip_type for offset in range(winning_length)):
+                return True
+
+    # Check columns for a win
+    for col in range(BOARD_COLS):
+        for row in range(BOARD_ROWS - winning_length + 1):
+            if all(board[row + offset][col] == chip_type for offset in range(winning_length)):
+                return True
+
+    # Check diagonals (top-left to bottom-right)
+    for row in range(BOARD_ROWS - winning_length + 1):
+        for col in range(BOARD_COLS - winning_length + 1):
+            if all(board[row + offset][col + offset] == chip_type for offset in range(winning_length)):
+                return True
+
+    # Check diagonals (top-right to bottom-left)
+    for row in range(BOARD_ROWS - winning_length + 1):
+        for col in range(winning_length - 1, BOARD_COLS):
+            if all(board[row + offset][col - offset] == chip_type for offset in range(winning_length)):
+                return True
+
+    return False
+
+'''def check_if_winner(board, chip_type):
     # check all rows
     for row in range(3):
         if board[row][0] == board[row][1] == board[row][2] == chip_type:
@@ -38,7 +68,7 @@ def check_if_winner(board, chip_type):
     if board[0][2] == board[1][1] == board[2][0] == chip_type:
         return True
 
-    return False
+    return False'''
 
 # row: row index, col: col index
 def is_valid(board, row, col):
