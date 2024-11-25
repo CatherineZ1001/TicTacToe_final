@@ -72,7 +72,7 @@ def check_if_winner(board, chip_type):
 
 # row: row index, col: col index
 def is_valid(board, row, col):
-    if 0 <= row <= 2 and 0 <= col <= 2 and board[row][col] == '-':
+    if 0 <= row <= BOARD_ROWS and 0 <= col <= BOARD_COLS and board[row][col] == '-':
         return True
     return False
 
