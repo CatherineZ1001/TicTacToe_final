@@ -200,23 +200,6 @@ def settings_page():
 
         pygame.display.flip()
         
-    def change_size():
-        global BOARD_COLS, BOARD_ROWS, SQUARE_SIZE, board
-        if game_mode == "3*3":
-            BOARD_ROWS = 3
-            BOARD_COLS = 3
-        elif game_mode == "4*4":
-            BOARD_ROWS = 4
-            BOARD_COLS = 4
-        elif game_mode == "5*5":
-            BOARD_ROWS = 5
-            BOARD_COLS = 5
-        elif game_mode == "3player":
-            BOARD_ROWS = 5
-            BOARD_COLS = 5
-
-        SQUARE_SIZE = WIDTH // BOARD_COLS
-        board = initialize_board()
 
 
 def mode_page():
@@ -269,6 +252,7 @@ def mode_page():
                     return
 
         pygame.display.flip()
+        
 def normal_mode_page():
     """
     Display the Normal Mode page with 3x3, 4x4, and 5x5 buttons, along with a back button.
@@ -315,14 +299,39 @@ def normal_mode_page():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if buttons[-1].collidepoint(event.pos):  # Back button
                     return
-                for j, button in enumerate(buttons[:-1]):  # Other buttons
-                    if button.collidepoint(event.pos):
-                        print(f"Selected {labels[j]}")
+                if buttons[0].collidepoint(event.pos):  # 3*3 button
+                    game_mode = "3*3"
+                    change_size()
+                    game()
+                if buttons[1].collidepoint(event.pos):  # 4*4 button
+                    game_mode = "4*4"
+                    change_size()
+                    game()
+                if buttons[2].collidepoint(event.pos):  # 5*5 button
+                    game_mode = "5*5"
+                    change_size()
+                    game()
 
         pygame.display.flip()
 
 
+def change_size():
+    global BOARD_COLS, BOARD_ROWS, SQUARE_SIZE, board
+    if game_mode == "3*3":
+        BOARD_ROWS = 3
+        BOARD_COLS = 3
+    elif game_mode == "4*4":
+        BOARD_ROWS = 4
+        BOARD_COLS = 4
+    elif game_mode == "5*5":
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
+    elif game_mode == "3player":
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
 
+    SQUARE_SIZE = WIDTH // BOARD_COLS
+    board = initialize_board()
 
 def special_mode_page():
     """
