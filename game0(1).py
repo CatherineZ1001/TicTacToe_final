@@ -31,7 +31,7 @@ def music():
 font = pygame.font.Font(None, 50)
 small_font = pygame.font.Font(None, 36)
 
-
+'''
 # set up the mode choice page
 def mode_page():
     # button area
@@ -97,7 +97,7 @@ def mode_page():
                     change_size()
                     game()
 
-        pygame.display.flip()
+        pygame.display.flip()'''
         
 
 
