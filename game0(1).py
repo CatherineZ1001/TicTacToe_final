@@ -166,8 +166,7 @@ def settings_page():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                return "QUIT"
+                break
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if color_button.collidepoint(event.pos):
                     # change bg color
@@ -205,100 +204,141 @@ def draw_grid():
             LINE_WIDTH
         )
 
+
 def draw_chips():
-    #To draw X and Os
+    """
+    draw normal chips and big chips
+    """
     chip_font = pygame.font.Font(None, CHIP_FONT)
-    
-    chip_x_surf = chip_font.render("x", 0, CROSS_COLOR)
-    chip_o_surf = chip_font.render("o", 0, CIRCLE_COLOR)
+
+    # normal chips
+    chip_x_surf = chip_font.render("x", True, CROSS_COLOR)
+    chip_o_surf = chip_font.render("o", True, CIRCLE_COLOR)
+
+    # big chips
+    big_chip_x_surf = chip_font.render("X", True, CROSS_COLOR)
+    big_chip_o_surf = chip_font.render("O", True, CIRCLE_COLOR)
 
     for row in range(BOARD_ROWS):
         for col in range(BOARD_COLS):
+            center = (col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
             if board[row][col] == "x":
-                chip_x_rect = chip_x_surf.get_rect(center = (col * SQUARE_SIZE + SQUARE_SIZE/2, row * SQUARE_SIZE + SQUARE_SIZE/2))
+                chip_x_rect = chip_x_surf.get_rect(center=center)
                 screen.blit(chip_x_surf, chip_x_rect)
-
             elif board[row][col] == "o":
-                chip_o_rect = chip_o_surf.get_rect(center = (col * SQUARE_SIZE + SQUARE_SIZE/2, row * SQUARE_SIZE + SQUARE_SIZE/2))
+                chip_o_rect = chip_o_surf.get_rect(center=center)
                 screen.blit(chip_o_surf, chip_o_rect)
+            elif board[row][col] == "X":
+                big_chip_x_rect = big_chip_x_surf.get_rect(center=center)
+                screen.blit(big_chip_x_surf, big_chip_x_rect)
+            elif board[row][col] == "O":
+                big_chip_o_rect = big_chip_o_surf.get_rect(center=center)
+                screen.blit(big_chip_o_surf, big_chip_o_rect)
+
+
+def use_big_chip(board, row, col, chip):
+
+    if 0 <= row < len(board) and 0 <= col < len(board[row]):
+        # set the position to big chips
+        board[row][col] = chip.upper()
+        print(f"Placed big chip {chip.upper()} at ({row}, {col})")
+    else:
+        print("Invalid row or col.")
+
 
 def restart_game():
-    result = start_page()
-
-    #restart game by re-initializng board and resetting turn
-    global board, current_player, chip
+    global board, player1_big_chip_used, player2_big_chip_used
     board = initialize_board()
-    current_player = 1
-    chip = 'x' #player 1 is x
-    
-'''
-    # game loop
-    screen.fill(BG_COLOR)
-    draw_grid()
-    draw_chips()'''
+    player1_big_chip_used = False
+    player2_big_chip_used = False
+
 
 def game_page():
-    player = 1
-    chip = 'x'
-    confetti_list = []
+    global board  # Ensure that the board state is shared globally
+    player = 1  # Current player, 1 or 2
+    chip = 'x'  # Current chip, 'x' or 'o'
+    player1_big_chip_used = False  # Player 1 Whether to use oversized pieces
+    player2_big_chip_used = False  # Player 2 Whether to use oversized pieces
 
     while True:
+        # Clear the screen and draw the board
+        screen.fill(BG_COLOR)
+        draw_grid()
+        draw_chips()
 
-        # game loop
-            screen.fill(BG_COLOR)
-            draw_grid()
-            draw_chips()
-                
-            #event loop
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+        # Event processing
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    x, y = event.pos
-                    row = y//SQUARE_SIZE
-                    col = x//SQUARE_SIZE
+            # Handle mouse click events (common piece placement)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = event.pos
+                row = y // SQUARE_SIZE
+                col = x // SQUARE_SIZE
 
+                # Check if you can place common pieces
+                if is_valid(board, row, col):
+                    mark_square(board, row, col, chip)  # 放置棋子
+                    draw_chips()
 
-                    #check if square is empty
-                    if is_valid(board, row, col):
-                        #mark square with current chip
-                        mark_square(board, row, col, chip)
-
-                        #draw updated board
-                        draw_chips()
-
-                    #check for winner
+                    # Check victory condition
                     if check_if_winner(board, chip):
                         print(f"Player {player} wins!")
-
-                        for _ in range(100):
-                            confetti_list.append(Confetti(random.randint(0, WIDTH), random.randint(0, HEIGHT)))
-                        for confetti in confetti_list:
-                            confetti.update()
-                            confetti.draw(screen)
-                            
-                        #pygame.display.flip()
-                        #pygame.time.delay(1000)
                         restart_game()
-                        
-                        return 'START_GAME'
+                        return
 
-
+                    # check tie
                     elif board_is_full(board):
                         print("It's a tie!")
-                        #pygame.display.update()
-                        #pygame.time.delay(10000)
-
                         restart_game()
-                        return 'START_GAME'
+                        return
 
-                    #switch players after every move
+                    # switch player
                     player = 2 if player == 1 else 1
                     chip = 'o' if chip == 'x' else 'x'
 
-            pygame.display.flip()
+            # Handle keyboard press events (large piece placement)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
+                # Check if the current player still has large pieces
+                if (player == 1 and not player1_big_chip_used) or (player == 2 and not player2_big_chip_used):
+                    # Get mouse position
+                    x, y = pygame.mouse.get_pos()
+                    row = y // SQUARE_SIZE
+                    col = x // SQUARE_SIZE
+
+                    # Print debugging information
+                    print(f"Player {player} tries to place a big chip at ({row}, {col})")
+
+                    # Check that the position is within the board
+                    if 0 <= row < BOARD_ROWS and 0 <= col < BOARD_COLS:
+                        # Place a chip piece
+                        use_big_chip(board, row, col, chip)
+
+                        # Print checkerboard state
+                        print(f"Updated board: {board}")
+
+                        # Mark large pieces used
+                        if player == 1:
+                            player1_big_chip_used = True
+                        else:
+                            player2_big_chip_used = True
+
+                        # Draw the board and refresh the display
+                        draw_chips()
+
+                        # Check whether large chips lead to victory
+                        if check_if_winner(board, chip.upper()):
+                            print(f"Player {player} wins with a big chip!")
+                            restart_game()
+                            return
+                    else:
+                        print("Cannot put big chip here.")
+                player = 2 if player == 1 else 1
+                chip = 'o' if chip == 'x' else 'x'
+
+        pygame.display.flip()
 
 
 # run the game
