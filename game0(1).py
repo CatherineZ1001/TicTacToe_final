@@ -10,11 +10,11 @@ pygame.mixer.init()
 
 # set screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Tic Tac Toe!")
+pygame.display.set_caption("Let's play our Tic Tac Toe!")
 
 # initialize the board
 board = initialize_board()
-small_font = pygame.font.Font(None, 36)
+
 
 # set up the BGM
 def music():
@@ -31,7 +31,8 @@ def music():
 font = pygame.font.Font(None, 50)
 small_font = pygame.font.Font(None, 36)
 
-#change board size
+
+# set up the mode choice page
 def mode_page():
     # button area
     three_button = pygame.Rect(150, 100, 300, 80)
@@ -44,8 +45,7 @@ def mode_page():
     five_text = font.render("5*5 - 2 players", True, WHITE)
     five_3player_text = font.render('5*5 - 3 players', True, WHITE)
 
-    running = True
-    while running:
+    while True:
         screen.fill(BG_COLOR)
 
         #draw button
@@ -77,43 +77,17 @@ def mode_page():
                 running = False
                 return "QUIT"
             if event.type == pygame.MOUSEBUTTONDOWN:
-                global game_mode
                 if three_button.collidepoint(event.pos):
-                    global result
-                    game_mode = "3*3"
-                    change_size()
-                    game()
+                    pass
                 elif four_button.collidepoint(event.pos):
-                    game_mode = "4*4"
-                    change_size()
-                    game()
+                    pass
                     #return "SETTINGS"
                 elif five_button.collidepoint(event.pos):
-                    game_mode = "5*5"
-                    change_size()
-                    game()
+                    pass
                 elif five_3player_button.collidepoint(event.pos):
-                    game_mode = "3player"
-                    change_size()
-                    game()
+                    pass
 
         pygame.display.flip()
-
-
-def change_size():
-    global BOARD_COLS, BOARD_ROWS
-    
-    if game_mode == "3*3":
-        BOARD_ROWS = 3
-        BOARD_COLS = 3
-    elif game_mode == "4*4":
-        BOARD_ROWS = 4
-        BOARD_COLS = 4
-    elif game_mode == "5*5":
-        BOARD_ROWS = 5
-        BOARD_COLS = 5
-    elif game_mode == "3player":
-        pass
 
 
 
@@ -154,11 +128,12 @@ def start_page():
                break
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.collidepoint(event.pos):
-                    return "MODE_PAGE"
+                    return "START_GAME"
                 elif settings_button.collidepoint(event.pos):
                     return "SETTINGS"
 
         pygame.display.update()
+
 
 # set up the setting page
 def settings_page():
@@ -332,11 +307,9 @@ def main():
     while True:
         music()
         result = start_page()
-        if result == "MODE_PAGE":
-            mode_page()
         if result == "START_GAME":
-            game()
-        if result == "SETTINGS":
+            game_page()
+        elif result == "SETTINGS":
             settings_page()
         elif result == "QUIT":
             break
