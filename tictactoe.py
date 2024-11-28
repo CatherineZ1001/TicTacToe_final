@@ -16,12 +16,31 @@ def mark_square(board, row, col, chip_type):
     board[row][col] = chip_type
 
 def board_is_full(board):
-    for row in board:
-        for chip in row:
-            if chip == "-":
-                return False
-    return True
+    return all(all(cell != "" for cell in row) for row in board)
 
+def check_if_winner(board, chip):
+    """
+    Checks if the given chip has formed a winning line.
+    """
+    # Check rows
+    for row in board:
+        if all(cell == chip for cell in row):
+            return True
+
+    # Check columns
+    for col in range(len(board)):
+        if all(row[col] == chip for row in board):
+            return True
+
+    # Check diagonals
+    if all(board[i][i] == chip for i in range(len(board))):
+        return True
+    if all(board[i][len(board) - 1 - i] == chip for i in range(len(board))):
+        return True
+
+    return False
+    
+'''
 def check_if_winner(board, chip_type):
     """Check for a winning condition on the board."""
     winning_length = 3 if BOARD_ROWS <= 3 else 4 if BOARD_ROWS == 4 else 5
@@ -51,6 +70,10 @@ def check_if_winner(board, chip_type):
                 return True
 
     return False
+'''
+    
+    def is_valid(board, row, col):
+    return  0 <= row < BOARD_ROWS and 0 <= col < BOARD_COLS and board[row][col] == '-'
 
 '''def check_if_winner(board, chip_type):
     # check all rows
@@ -70,11 +93,11 @@ def check_if_winner(board, chip_type):
 
     return False'''
 
-# row: row index, col: col index
+'''# row: row index, col: col index
 def is_valid(board, row, col):
     if 0 <= row <= BOARD_ROWS and 0 <= col <= BOARD_COLS and board[row][col] == '-':
         return True
-    return False
+    return False'''
 
 '''def print_board(board):
     for row in board:    # row: ["-", "-", "-"]
