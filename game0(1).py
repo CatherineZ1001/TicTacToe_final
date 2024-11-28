@@ -91,15 +91,15 @@ def mode_page():
 
 
 
-# set up the start page
+#create the start page
 def start_page():
     """
-    display start page
+    display start page with start button and settings button
     """
-    # button initialization
+    #place start button and settings button
     start_button = pygame.Rect(150, 200, 300, 100)
     settings_button = pygame.Rect(150, 350, 300, 100)
-    # button text
+    #draw text of start button and settings button
     start_text = font.render("Start Game", True, WHITE)
     settings_text = font.render("Settings", True, WHITE)
 
@@ -108,16 +108,16 @@ def start_page():
         #set screen color
         screen.fill(WHITE)
 
-        #draw button
+        #draw start button and settings button
         pygame.draw.rect(screen, BLUE, start_button)
         pygame.draw.rect(screen, ORANGE, settings_button)
 
-        # put start text to centre of the button
+        #put 'Start Game' to centre of the start button
         x_start_button = start_button.x + (start_button.width - start_text.get_width()) // 2
         y_start_button = start_button.y + (start_button.height - start_text.get_height()) // 2
         screen.blit(start_text, (x_start_button, y_start_button))
 
-        #put the settings text to the centre of the button
+        #put the 'Settings' to the centre of the settings button
         x_settings_button = settings_button.x + (settings_button.width - settings_text.get_width()) // 2
         y_settings_button = settings_button.y + (settings_button.height - settings_text.get_height()) // 2
         screen.blit(settings_text, (x_settings_button, y_settings_button))
@@ -127,32 +127,46 @@ def start_page():
             if event.type == pygame.QUIT:
                break
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.collidepoint(event.pos):
+                if start_button.collidepoint(event.pos):#click 'Start Game' button to start game
                     return "START_GAME"
-                elif settings_button.collidepoint(event.pos):
+                elif settings_button.collidepoint(event.pos):#click 'Settings' button directing to settings
                     return "SETTINGS"
 
         pygame.display.update()
 
 
-# set up the setting page
+#create the setting page
 def settings_page():
     """
-    Display the settings page with a Mode button, Back button, and Music button.
+    display the settings page with mode button, back button, and music button.
     """
-    # Calculate button dimensions and spacing
+    #set size of button and spacing
     button_width = 300
     button_height = 60
-    button_spacing = 20
+    button_space = 20
     screen_center_x = screen.get_width() // 2
-    initial_y = 200
+    y = 200
 
-    # Button positions
-    mode_button = pygame.Rect(screen_center_x - button_width // 2, initial_y, button_width, button_height)
-    back_button = pygame.Rect(screen_center_x - button_width // 2, initial_y + button_height + button_spacing, button_width, button_height)
-    music_button = pygame.Rect(screen_center_x - button_width // 2, initial_y + 2 * (button_height + button_spacing), button_width, button_height)
+    #place buttons
+    #calculate x and y of mode button
+    mode_button_x = screen_center_x - button_width // 2
+    mode_button_y = y
+    #place mode button
+    mode_button = pygame.Rect(mode_button_x, mode_button_y , button_width, button_height)
 
-    # Button text
+    #calculate x and y of back button
+    back_button_x = mode_button.x
+    back_button_y = mode_button.y + button_height + button_space
+    #place back button
+    back_button = pygame.Rect(back_button_x, back_button_y, button_width, button_height)
+
+    #calculate x and y of music button
+    music_button_x = mode_button.x
+    music_button_y = back_button.y + button_height + button_space
+    #place music button
+    music_button = pygame.Rect(music_button_x, music_button_y, button_width, button_height)
+
+    #draw text of mode button, back button, music button
     mode_text = font.render("Game Modes", True, WHITE)
     back_text = font.render("Back to Menu", True, WHITE)
     music_text = font.render("Music", True, WHITE)
@@ -161,18 +175,29 @@ def settings_page():
     while running:
         screen.fill(BG_COLOR)
 
-        # Draw buttons
+        #draw buttons
         pygame.draw.rect(screen, BLUE, mode_button)
         pygame.draw.rect(screen, BLACK, back_button)
         pygame.draw.rect(screen, ORANGE, music_button)
 
-        # Center text on buttons
-        screen.blit(mode_text, (mode_button.x + (button_width - mode_text.get_width()) // 2,
-                                mode_button.y + (button_height - mode_text.get_height()) // 2))
-        screen.blit(back_text, (back_button.x + (button_width - back_text.get_width()) // 2,
-                                back_button.y + (button_height - back_text.get_height()) // 2))
-        screen.blit(music_text, (music_button.x + (button_width - music_text.get_width()) // 2,
-                                 music_button.y + (button_height - music_text.get_height()) // 2))
+        #put text of buttons to the center
+        #calculate x and y of mode text
+        mode_text_x = mode_button.x + (button_width - mode_text.get_width()) // 2
+        mode_text_y = mode_button.y + (button_height - mode_text.get_height()) // 2
+        #center mode text
+        screen.blit(mode_text, (mode_text_x, mode_text_y))
+
+        #calculate x and y of back text
+        back_text_x = back_button.x + (button_width - back_text.get_width()) // 2
+        back_text_y = back_button.y + (button_height - back_text.get_height()) // 2
+        #center back text
+        screen.blit(back_text, (back_text_x, back_text_y))
+
+        #calculate x and y of music text
+        music_text_x = music_button.x + (button_width - music_text.get_width()) // 2
+        music_text_y = music_button.y + (button_height - music_text.get_height()) // 2
+        #center music text
+        screen.blit(music_text, (music_text_x, music_text_y))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -181,7 +206,7 @@ def settings_page():
                 if mode_button.collidepoint(event.pos):
                     mode_page()
                 elif back_button.collidepoint(event.pos):
-                    return
+                    return "back to menu"
                 elif music_button.collidepoint(event.pos):
                     if pygame.mixer.music.get_busy():
                         pygame.mixer.music.stop()
@@ -195,19 +220,33 @@ def mode_page():
     """
     Display the game modes page with Normal Mode and Special Mode buttons.
     """
-    # Button dimensions
+    #set size of button and spacing
     button_width = 300
     button_height = 60
     button_spacing = 20
     screen_center_x = screen.get_width() // 2
-    initial_y = 200
+    y = 200
 
-    # Button positions
-    normal_mode_button = pygame.Rect(screen_center_x - button_width // 2, initial_y, button_width, button_height)
-    special_mode_button = pygame.Rect(screen_center_x - button_width // 2, initial_y + button_height + button_spacing, button_width, button_height)
-    back_button = pygame.Rect(screen_center_x - button_width // 2, initial_y + 2 * (button_height + button_spacing), button_width, button_height)
+    #place buttons
+    #calculate x and y of normal mode button
+    normal_mode_button_x = screen_center_x - button_width // 2
+    normal_mode_button_y = y
+    #place normal mode button
+    normal_mode_button = pygame.Rect(normal_mode_button_x, normal_mode_button_y , button_width, button_height)
 
-    # Button text
+    #calculate x and y of special mode button
+    special_mode_button_x = normal_mode_button.x
+    special_mode_button_y = y + button_height + button_spacing
+    #place special mode button
+    special_mode_button = pygame.Rect(special_mode_button_x, special_mode_button_y, button_width, button_height)
+
+    #calculate x and y of back button
+    back_button_x = special_mode_button.x
+    back_button_y = special_mode_button.y + button_height + button_spacing
+    #place back button
+    back_button = pygame.Rect(back_button_x, back_button_y, button_width, button_height)
+
+    #draw button text
     normal_mode_text = font.render("Normal Mode", True, WHITE)
     special_mode_text = font.render("Special Mode", True, WHITE)
     back_text = font.render("Back to Settings", True, WHITE)
@@ -221,13 +260,24 @@ def mode_page():
         pygame.draw.rect(screen, ORANGE, special_mode_button)
         pygame.draw.rect(screen, BLACK, back_button)
 
-        # Center text on buttons
-        screen.blit(normal_mode_text, (normal_mode_button.x + (button_width - normal_mode_text.get_width()) // 2,
-                                       normal_mode_button.y + (button_height - normal_mode_text.get_height()) // 2))
-        screen.blit(special_mode_text, (special_mode_button.x + (button_width - special_mode_text.get_width()) // 2,
-                                        special_mode_button.y + (button_height - special_mode_text.get_height()) // 2))
-        screen.blit(back_text, (back_button.x + (button_width - back_text.get_width()) // 2,
-                                back_button.y + (button_height - back_text.get_height()) // 2))
+        #put text of buttons to the center
+        #calculate x and y of normal text
+        normal_mode_text_x = normal_mode_button.x + (button_width - normal_mode_text.get_width()) // 2
+        normal_mode_text_y = normal_mode_button.y + (button_height - normal_mode_text.get_height()) // 2
+        #center normal mode text
+        screen.blit(normal_mode_text, (normal_mode_text_x, normal_mode_text_y))
+
+        #calculate x and y of special text
+        special_mode_text_x = special_mode_button.x + (button_width - special_mode_text.get_width()) // 2
+        special_mode_text_y = special_mode_button.y + (button_height - special_mode_text.get_height()) // 2
+        #center special mode text
+        screen.blit(special_mode_text, (special_mode_text_x, special_mode_text_y))
+
+        #calculate x and y of back text
+        back_text_x = back_button.x + (button_width - back_text.get_width()) // 2
+        back_text_y = back_button.y + (button_height - back_text.get_height()) // 2
+        #center back text
+        screen.blit(back_text, (back_text_x, back_text_y))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -249,17 +299,32 @@ def normal_mode_page():
     labels = ["3x3", "4x4", "5x5", "Back to Modes"]
 
     # Calculate button dimensions dynamically based on the widest label
-    button_width = max([font.size(label)[0] for label in labels]) + 60  # Add padding
+    max_label_width = 0
+    for label in labels:
+        # Get the width of the label
+        label_width = font.size(label)[0]
+
+        if label_width > max_label_width:
+            max_label_width = label_width
+
+    button_width = max_label_width + 60
     button_height = 60  # Consistent height for all buttons
     button_spacing = 20  # Spacing between buttons
     screen_center_x = screen.get_width() // 2
     initial_y = 200  # Starting y-coordinate for the first button
 
     # Generate button positions
-    buttons = [
-        pygame.Rect(screen_center_x - button_width // 2, initial_y + i * (button_height + button_spacing), button_width, button_height)
-        for i in range(len(labels))
-    ]
+    buttons = []
+    for i in range(len(labels)):
+        button_y = initial_y + i * (button_height + button_spacing)
+
+        button_rect = pygame.Rect(
+            screen_center_x - button_width//2,
+            button_y,
+            button_width,
+            button_height
+        )
+        buttons.append(button_rect)
 
     running = True
     while running:
@@ -267,7 +332,10 @@ def normal_mode_page():
 
         # Draw the buttons and labels
         for i, button in enumerate(buttons):
-            color = BLUE if i < len(labels) - 1 else BLACK  # Blue for mode buttons, black for the back button
+            if i < len(labels) - 1:
+                color = BLUE
+            else:
+                BLACK  # Blue for mode buttons, black for the back button
             pygame.draw.rect(screen, color, button)
 
             # Render text and center it on the button
@@ -294,20 +362,41 @@ def normal_mode_page():
         pygame.display.flip()
 
 
-
-
 def special_mode_page():
     """
     Display the Special Mode page with 5x5 for 3 players, Big X and O, and 3D Mode buttons.
     """
     modes = [("5x5 for 3 Players", 200), ("Big X and O", 300), ("3D Mode", 400)]
-    button_width = max([font.size(label)[0] + 40 for label, _ in modes])  # Dynamic width based on longest label
+    button_width = 0
+
+    for label, _ in modes:
+        label_width = font.size(label)[0] + 40
+
+        if label_width > button_width:
+            button_width = label_width
     button_height = 60
     button_spacing = 20
     screen_center_x = screen.get_width() // 2
+    # Create an empty list to store button rectangles
+    buttons = []
 
-    buttons = [pygame.Rect(screen_center_x - button_width // 2, y, button_width, button_height) for _, y in modes]
-    back_button = pygame.Rect(screen_center_x - button_width // 2, modes[-1][1] + button_height + button_spacing, button_width, button_height)
+    # Loop through each mode to create a button rectangle
+    for x, y in modes:
+        # Create a rectangle for the button
+        button_rect = pygame.Rect(
+            screen_center_x - button_width // 2,
+            y,
+            button_width,
+            button_height
+        )
+        buttons.append(button_rect)
+
+    back_button = pygame.Rect(
+        screen_center_x - button_width // 2,
+        modes[-1][1] + button_height + button_spacing,
+        button_width,
+        button_height
+    )
 
     back_text = font.render("Back to Modes", True, WHITE)
 
@@ -336,27 +425,6 @@ def special_mode_page():
                     return
 
         pygame.display.flip()
-# set up the game page
-def draw_grid():
-    #draw horizontal lines
-    for i in range(1, BOARD_ROWS):
-        pygame.draw.line(
-            screen,
-            LINE_COLOR,
-            (0, i * SQUARE_SIZE),
-            (WIDTH, i * SQUARE_SIZE),
-            LINE_WIDTH
-        )
-    #draw vertical lines
-    for i in range(1, BOARD_COLS):
-        pygame.draw.line(
-            screen,
-            LINE_COLOR,
-            (i * SQUARE_SIZE, 0),
-            (i * SQUARE_SIZE, HEIGHT),
-            LINE_WIDTH
-        )
-
 
 def draw_chips():
     """
@@ -449,8 +517,14 @@ def game_page():
                         return
 
                     # switch player
-                    player = 2 if player == 1 else 1
-                    chip = 'o' if chip == 'x' else 'x'
+                    if player == 1:
+                        player = 2
+                    else:
+                        player = 1
+                    if chip == 'x':
+                        chip = 'o'
+                    else:
+                        chip = 'x'
 
             # Handle keyboard press events (large piece placement)
             if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
@@ -488,10 +562,17 @@ def game_page():
                             return
                     else:
                         print("Cannot put big chip here.")
-                player = 2 if player == 1 else 1
-                chip = 'o' if chip == 'x' else 'x'
+                if player == 1:
+                    player = 2
+                else:
+                    player = 1
+                if chip == 'x':
+                    chip = 'o'
+                else:
+                    chip = 'x'
 
         pygame.display.flip()
+
 
 
 # run the game
