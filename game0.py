@@ -133,7 +133,7 @@ def settings_page():
 
 
 """
-def game():
+def game.py():
     
     
     
@@ -244,13 +244,13 @@ def draw_chips():
 def restart_game():
     result = start_page()
 
-    #restart game by re-initializng board and resetting turn
+    #restart game.py by re-initializng board and resetting turn
     global board, current_player, chip
     board = initialize_board()
     current_player = 1
     chip = 'x' #player 1 is x
 
-    # game loop
+    # game.py loop
     screen.fill(BG_COLOR)
     draw_grid()
     draw_chips()
@@ -263,7 +263,7 @@ def game():
 
     while True:
 
-        # game loop
+        # game.py loop
             screen.fill(BG_COLOR)
             draw_grid()
             draw_chips()

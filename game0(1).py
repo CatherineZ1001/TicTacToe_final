@@ -4,6 +4,7 @@ import pygame.mixer
 from constants import *
 from tictactoe import *
 from Confetti import *
+from game import *
 
 pygame.init()
 pygame.mixer.init()
@@ -127,7 +128,7 @@ def start_page():
             if event.type == pygame.QUIT:
                break
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button.collidepoint(event.pos):#click 'Start Game' button to start game
+                if start_button.collidepoint(event.pos):#click 'Start Game' button to start game.py
                     return "START_GAME"
                 elif settings_button.collidepoint(event.pos):#click 'Settings' button directing to settings
                     return "SETTINGS"
@@ -218,7 +219,7 @@ def settings_page():
 
 def mode_page():
     """
-    Display the game modes page with Normal Mode and Special Mode buttons.
+    Display the game.py modes page with Normal Mode and Special Mode buttons.
     """
     #set size of button and spacing
     button_width = 300
@@ -575,7 +576,7 @@ def game_page():
 
 
 
-# run the game
+# run the game.py
 def main():
 
     while True:

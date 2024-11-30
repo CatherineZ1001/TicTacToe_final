@@ -40,7 +40,7 @@ def check_if_winner(board, chip):
 
     return False
     
-'''
+
 def check_if_winner(board, chip_type):
     """Check for a winning condition on the board."""
     winning_length = 3 if BOARD_ROWS <= 3 else 4 if BOARD_ROWS == 4 else 5
@@ -70,12 +70,12 @@ def check_if_winner(board, chip_type):
                 return True
 
     return False
-'''
+
     
     def is_valid(board, row, col):
-    return  0 <= row < BOARD_ROWS and 0 <= col < BOARD_COLS and board[row][col] == '-'
+        return  0 <= row < BOARD_ROWS and 0 <= col < BOARD_COLS and board[row][col] == '-'
 
-'''def check_if_winner(board, chip_type):
+def check_if_winner(board, chip_type):
     # check all rows
     for row in range(3):
         if board[row][0] == board[row][1] == board[row][2] == chip_type:
@@ -91,26 +91,26 @@ def check_if_winner(board, chip_type):
     if board[0][2] == board[1][1] == board[2][0] == chip_type:
         return True
 
-    return False'''
+    return False
 
-'''# row: row index, col: col index
+# row: row index, col: col index
 def is_valid(board, row, col):
     if 0 <= row <= BOARD_ROWS and 0 <= col <= BOARD_COLS and board[row][col] == '-':
         return True
-    return False'''
+    return False
 
-'''def print_board(board):
+def print_board(board):
     for row in board:    # row: ["-", "-", "-"]
         for col in row:
             print(col, end=" ")
-        print()'''
+        print()
 
 
-'''def available_square(board, row, col):
+def available_square(board, row, col):
     return board[row][col] == '-'
-    '''
 
-'''if __name__ == "__main__":
+
+if __name__ == "__main__":
     # main logic
     print("Player 1: x\nPlayer 2: o\n")
     board = initialize_board()
@@ -148,4 +148,4 @@ def is_valid(board, row, col):
         # alternating between players
         player = 2 if player == 1 else 1
         chip = 'o' if chip == 'x'else 'x'
-        '''
+
