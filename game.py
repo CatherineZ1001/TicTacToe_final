@@ -479,128 +479,71 @@ def game_page():
 
         pygame.display.flip()
 
-
 def three_players():
     global screen
+    screen.fill(BG_COLOR)
 
     players = ['x', 'o', 'a']
     current_player_index = 0
     current_player = players[current_player_index]
 
+    board = initialize_board(5)  # Initialize a 5x5 board
+    reset_game(5)
+
     def draw_chips_3(board):
-        chip_x_surf = chip_font.render("x", 0, CROSS_COLOR)
-        chip_o_surf = chip_font.render("o", 0, CIRCLE_COLOR)
-        chip_v_surf = chip_font.render("v", 0, CIRCLE_COLOR)
-
-        for row in range(GRID_SIZE):
-            for col in range(GRID_SIZE):
-                if board[row][col] == "x":
-                    chip_x_rect = chip_x_surf.get_rect(
-                        center=(col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
-                    )
-                    screen.blit(chip_x_surf, chip_x_rect)
-                elif board[row][col] == "o":
-                    chip_o_rect = chip_o_surf.get_rect(
-                        center=(col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
-                    )
-                    screen.blit(chip_o_surf, chip_o_rect)
-                elif board[row][col] == "v":
-                    chip_v_rect = chip_v_surf.get_rect(
-                        center=(col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
-                    )
-                    screen.blit(chip_v_surf, chip_v_rect)
-
-    def switch_player():
-        nonlocal current_player_index, current_player
-        current_player_index = (current_player_index + 1) % 3
-        current_player = players[current_player_index]
-
-    def reset_game_3(new_grid_size):
-        global GRID_SIZE, SQUARE_SIZE, board, player, chip, game_over, winner
-        GRID_SIZE = new_grid_size
-        SQUARE_SIZE = WIDTH // GRID_SIZE
-        board = initialize_board(GRID_SIZE)
-        current_player_index = 0
-        player = 1
-        chip = players[current_player_index]
-        game_over = False
-        winner = 0
         screen.fill(BG_COLOR)
-        draw_grid()
-        pygame.display.update()
+        draw_lines()
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
+        font = pygame.font.Font(None, SQUARE_SIZE // 2)
+        for row in range(BOARD_ROWS):
+            for col in range(BOARD_COLS):
+                chip = board[row][col]
+                if chip:
+                    chip_color = CROSS_COLOR if chip == 'x' else CIRCLE_COLOR if chip == 'o' else GREEN
+                    chip_surf = font.render(chip.upper(), True, chip_color)
+                    chip_rect = chip_surf.get_rect(
+                        center=(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2))
+                    screen.blit(chip_surf, chip_rect)
 
-    reset_game_3(5)  # 5x5 grid for 3 players mode
+    def draw_lines():
+        BOARD_ROWS = 5
+        BOARD_COLS = 5
+        for i in range(1, BOARD_ROWS):
+            pygame.draw.line(screen, LINE_COLOR, (0, i * SQUARE_SIZE), (WIDTH, i * SQUARE_SIZE), LINE_WIDTH)
+            pygame.draw.line(screen, LINE_COLOR, (i * SQUARE_SIZE, 0), (i * SQUARE_SIZE, HEIGHT), LINE_WIDTH)
+
+    draw_lines()
+    pygame.display.flip()
+
     game_over = False
-    winner = 0
-    draw_chips_3(board)
-
     while not game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                row = event.pos[1] // GRID_SIZE
-                col = event.pos[0] // GRID_SIZE
+            if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
+                mouseX, mouseY = event.pos
+                clicked_row = mouseY // SQUARE_SIZE
+                clicked_col = mouseX // SQUARE_SIZE
 
-                if is_valid(board, row, col):
-                    mark_square(board, row, col, current_player)
-                    draw_chips(board)
-                    pygame.display.update()
-
+                if board[clicked_row][clicked_col] == '':
+                    mark_square(board, clicked_row, clicked_col, current_player)
+                    draw_chips_3(board)
                     if check_if_winner(board, current_player):
                         game_over = True
-                        winner = current_player
-                    elif board_is_full(board):
-                        game_over = True
+                        print(f"Player {current_player} wins!")
+                    current_player_index = (current_player_index + 1) % len(players)
+                    current_player = players[current_player_index]
 
-                    if not game_over:
-                        switch_player()
+                pygame.display.flip()
 
-    pygame.time.wait(3000)  # Display game over for 3 seconds
+            if board_is_full(board):
+                game_over = True
+                print("It's a tie!")
 
-
-    # Inside your game loop, call switch_player() after every turn.
-
-    # For example, updating the game loop
-    player = 1
-    chip = players[current_player_index]
-    while not game_over:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                row = event.pos[1] // SQUARE_SIZE
-                col = event.pos[0] // SQUARE_SIZE
-
-                if is_valid(board, row, col):
-                    mark_square(board, row, col, current_player)
-                    draw_chips(board)
-                    pygame.display.update()
-
-                    if check_if_winner(board, current_player):
-                        game_over = True
-                        winner = current_player
-                    elif board_is_full(board):
-                        game_over = True
-
-                    if not game_over:
-                        switch_player()
-
-    pygame.time.wait(3000)  # Display game over for 3 seconds
-
-
-    # Switch to the next player
-    switch_player()
-    chip = players[current_player_index]
-
-    draw_chips_3(board)
-    pygame.display.update()
-
-
+        pygame.display.update()
 
 
 
