@@ -6,65 +6,66 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
     global BOARD_SIZE, SQUARE_SIZE 
     BOARD_SIZE = size
     SQUARE_SIZE = s_size
-    player1_big_chip_used = False  # Player 1 Whether to use oversized pieces
-    player2_big_chip_used = False  # Player 2 Whether to use oversized pieces
+    player1_big_chip_used = False  #check whether player 1 have used the big chip
+    player2_big_chip_used = False  #check whether player 2 have used the big chip
 
     while True:
-        # Clear the screen and draw the board
+        #draw the board on screen
         screen.fill(BG_COLOR)
         draw_grid(screen)
         draw_chips(screen, board)
 
-        # Event processing
+        #event
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT: #quit game
                 pygame.quit()
                 sys.exit()
 
-            # Handle mouse click events (common piece placement)
+            #check clickings
             if event.type == pygame.MOUSEBUTTONDOWN: #and not game_over
-                x, y = event.pos
-                row = y // SQUARE_SIZE
-                col = x // SQUARE_SIZE
+                x, y = event.pos #check the position clicked
+                row_num = y // SQUARE_SIZE #divides the y position by squaresize to calculate the row number clicked
+                column = x // SQUARE_SIZE #divides the x position by squaresize to calculate the column number clicked
 
-                if available_square(board, row, col):
-                    mark_square(board, row, col, chip)
+                if available_square(board, row, column): #check if the square d available
+                    mark_square(board, row, column, chip) #mark chips that players placed
 
-                    if check_if_winner(board, chip):
-                        return game_over_page(screen, chip)
-                    elif board_is_full(board):
-                        return game_over_page(screen, chip, Tie = True)
+                    if check_if_winner(board, chip): #check if current player wins
+                        return game_over_page(screen, chip) #show game over page if current player wins
+                    elif board_is_full(board):#check if the board is full
+                        return game_over_page(screen, chip, Tie = True) #if the board is full, show game over page with tie
 
-                    # Alternate players
+                    #switch players
                     chip = 'o' if chip == 'x' else 'x'
 
-            if Big_X_and_O == True: 
-            # Handle keyboard press events (large piece placement)
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    # Check if the current player still has large pieces
+            if Big_X_and_O == True: #check if big chip mode is on
+                #click spce to use big chips!!!!!
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE: #chck if space is clicked to use big chips
+                    # Check if the current player still has the big chip
                     if (chip == 'x' and not player1_big_chip_used) or (chip == 'o' and not player2_big_chip_used):
-                        # Get mouse position
+                        #get the position clicked
                         x, y = pygame.mouse.get_pos()
                         row = y // SQUARE_SIZE
-                        col = x // SQUARE_SIZE
-                        # Place a chip piece
-                        mark_square(board, row, col, chip)
-                        # Draw the board and refresh the display
+                        column = x // SQUARE_SIZE
+                        #place chip
+                        mark_square(board, row, column, chip)
+                        #draw the board and display chip
                         draw_chips(screen, board, big_chip = True)
-                        print(f"Placed big chip {chip.upper()} at ({row}, {col})")
+                        print(f"Placed big chip {chip.upper()} at ({row}, {column})")
 
-                        # Mark large pieces used
+                        #update the state whether the big chip is used
                         if chip == 'x':
                             player1_big_chip_used = True
                         else:
                             player2_big_chip_used = True
 
-                        # Check whether large chips lead to victory
-                        if check_if_winner(board, chip):
+                        #check whether big chip lead to victory
+                        if check_if_winner(board, chip): #if victory, show game over page with vistory
                             return game_over_page(screen, chip)
-                        elif board_is_full(board):
+                        #check wether board is full
+                        elif board_is_full(board): #if board is full, show game over page with tie
                             return game_over_page(screen, chip, Tie = True)
-                            
+                        #switch players
                         chip = 'o' if chip == 'x' else 'x'
 
         pygame.display.flip()
