@@ -32,6 +32,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
 
                     if check_if_winner(board, chip): #check if current player wins
                         return game_over_page(screen, chip) #show game over page if current player wins
+                        
                     elif board_is_full(board):#check if the board is full
                         return game_over_page(screen, chip, Tie = True) #if the board is full, show game over page with tie
 
@@ -62,6 +63,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                         #check whether big chip lead to victory
                         if check_if_winner(board, chip): #if victory, show game over page with vistory
                             return game_over_page(screen, chip)
+                            
                         #check wether board is full
                         elif board_is_full(board): #if board is full, show game over page with tie
                             return game_over_page(screen, chip, Tie = True)
@@ -70,53 +72,61 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
 
         pygame.display.flip()
 
-
+#codes needed for three-player mode
 def three_players_game_page(screen, board):
     global BOARD_SIZE, SQUARE_SIZE
-    BOARD_SIZE = 5
+    BOARD_SIZE = 5    #reset the board to 5*5
     SQUARE_SIZE = 120
-    players = ['x', 'o', 'a']
-    current_player_index = 0
+    players = ['x', 'o', 'a']    #set three chips
+    current_player_index = 0    #set player order for three people
     current_player = players[current_player_index]
 
+    #draw chips 
     def draw_chips_3(board):
         font = pygame.font.Font(None, 60)
         for row in range(5):
             for col in range(5):
-                chip = board[row][col]
+                chip = board[row][col]    #set up a 2-d board to track game progress
                 if chip:
-                    chip_color = CROSS_COLOR if chip == 'x' else CIRCLE_COLOR if chip == 'o' else GREEN
-                    chip_surf = font.render(chip.upper(), True, chip_color)
+                    chip_color = CROSS_COLOR if chip == 'x' else CIRCLE_COLOR if chip == 'o' else GREEN    #set new chip color GREEN for 'a'
+                    chip_surf = font.render(chip.upper(), True, chip_color)    #create a surface for chips to be printed on board
                     chip_rect = chip_surf.get_rect(
-                        center=(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2))
-                    screen.blit(chip_surf, chip_rect)
+                        center=(col * SQUARE_SIZE + SQUARE_SIZE // 2, row * SQUARE_SIZE + SQUARE_SIZE // 2))    #calculate the location of chips
+                    screen.blit(chip_surf, chip_rect)    #draw the game surface to computer screen
 
         pygame.display.update()
 
     while True:
+        #initialize game page
         screen.fill(BG_COLOR)
         draw_grid(screen)
         draw_chips_3(board)
         
         for event in pygame.event.get():
+            #quit the game
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
+                
+            #draw the chips when click on board by mouse
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouseX, mouseY = event.pos
                 clicked_row = mouseY // SQUARE_SIZE
                 clicked_col = mouseX // SQUARE_SIZE
 
+                #mark the clicked grid
                 if board[clicked_row][clicked_col] == '-':
                     mark_square(board, clicked_row, clicked_col, current_player)
-                    
+
+                    #if there is a winner, jump to game over page with confetti
                     if three_players_check_if_winner(board, current_player):
                         return game_over_page(screen, current_player)
                     
+                    #if the board is full, jump to game over page with showing a tie
                     if board_is_full(board):
                         return game_over_page(screen, current_player, Tie = True)
-                    
+
+                    #switch players
                     current_player_index = (current_player_index + 1) % len(players)
                     current_player = players[current_player_index]
 
@@ -127,7 +137,8 @@ def game_over_page(screen, chip, Tie = False):
     font = pygame.font.Font(None, 50)
     back_button = pygame.Rect(150, 350, 300, 100)
     back_text = font.render("Back to Menu", True, WHITE)
-    
+
+    #if someone wins, show the winner and confetti
     if Tie == False:
         if chip == 'x':
             result_text = font.render(f'Player 1 (x) wins the game!', True, CROSS_COLOR)
@@ -135,26 +146,31 @@ def game_over_page(screen, chip, Tie = False):
             result_text = font.render(f'Player 2 (o) wins the game!', True, CIRCLE_COLOR)
         elif chip == 'a':
             result_text = font.render(f'Player 3 (a) wins the game!', True, GREEN)
-        
+
+        #draw confetti
         confetti_list = []
         for _ in range(100):
             confetti_list.append(Confetti(random.randint(0, WIDTH), random.randint(0, HEIGHT)))
-            
+    
+    #if it's a tie, show tie        
     else:
         result_text = font.render('It is a tie!', True, BLACK)
     result_text_rec = result_text.get_rect(center = (300, 200))
         
     while True:
+        #set up the screen
         screen.fill(BG_COLOR)
         screen.blit(result_text, result_text_rec)
         pygame.draw.rect(screen, BLACK, back_button)
         screen.blit(back_text, (300 - back_text.get_width()/2, 400 - back_text.get_height()/2))
-        
+
+        #draw confetti
         if Tie == False:
             for confetti in confetti_list:
                 confetti.update()
                 confetti.draw(screen)
-        
+
+        #quit the game
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                pygame.quit()
@@ -165,8 +181,7 @@ def game_over_page(screen, chip, Tie = False):
                     return
         
         pygame.display.update()
-
-
+        
 def draw_grid(screen):
     # Draw horizontal lines
     for i in range(1, BOARD_SIZE):
@@ -188,7 +203,7 @@ def draw_grid(screen):
             LINE_WIDTH
         )
 
-
+#draw chips for modes with only 2 players
 def draw_chips(screen, board, big_chip = False):
     chip_font = pygame.font.Font(None, 400) if big_chip == True else pygame.font.Font(None, 200)
     chip_x_surf = chip_font.render("x", 0, CROSS_COLOR)
