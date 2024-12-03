@@ -26,7 +26,7 @@ def start_page(screen):
         #calculate x and y for the start button
         x_start_text = start_button.x + (start_button.width - start_text.get_width()) // 2
         y_start_text = start_button.y + (start_button.height - start_text.get_height()) // 2
-        #place start button
+        #place start text
         screen.blit(start_text, (x_start_text, y_start_text))
 
         #put the 'Settings' to the centre of the settings button
