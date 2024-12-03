@@ -24,7 +24,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
             #check clickings
             if event.type == pygame.MOUSEBUTTONDOWN: #and not game_over
                 x, y = event.pos #check the position clicked
-                row_num = y // SQUARE_SIZE #divides the y position by squaresize to calculate the row number clicked
+                row = y // SQUARE_SIZE #divides the y position by squaresize to calculate the row number clicked
                 column = x // SQUARE_SIZE #divides the x position by squaresize to calculate the column number clicked
 
                 if available_square(board, row, column): #check if the square d available
