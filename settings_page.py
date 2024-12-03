@@ -191,13 +191,16 @@ def special_modes_page(screen):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                #big X and O mode
                 if buttons[0].collidepoint(event.pos):
                     board = initialize_board(3)
                     chip = 'x'
                     game_page(screen, board, chip, 3, 200, Big_X_and_O = True)
+                #3 player mode
                 elif buttons[1].collidepoint(event.pos): # 3player button
                     board = initialize_board(5)
                     three_players_game_page(screen, board)
+                # return button
                 elif buttons[-1].collidepoint(event.pos):
                     return
                 
