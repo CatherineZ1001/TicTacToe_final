@@ -91,7 +91,7 @@ def normal_modes_page(screen):
     """
     #draw the buttons
     global BOARD_SIZE, SQUARE_SIZE
-    button_labels = ["3x3", "4x4", "5x5", "Back to Modes"]
+    button_labels = ["3x3 - 3chips", "4x4 - 4chips", "5x5 - 5chips", "Back to Modes"]
     font = pygame.font.Font(None, 30)
 
     button_width = 300 #set button width to 300
@@ -153,7 +153,7 @@ def special_modes_page(screen):
     """
     Display the Special Mode page with 5x5 for 3 players and Big X and O
     """
-    labels = ["Big X and O", "5x5 for 3 Players", "Back to Menu"]
+    labels = ["Big X and O", "3 Players - 3chips", "Back to Menu"]
     button_width = 300
     button_height = 60
     button_spacing = 20
