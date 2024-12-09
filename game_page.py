@@ -31,9 +31,11 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                     draw_chips(screen, row, column, chip)
                     
                     if check_if_winner(board, chip): #check if current player wins
+                        pygame.time.delay(1000)
                         return game_over_page(screen, chip) #show game over page if current player wins
                         
                     elif board_is_full(board):#check if the board is full
+                        pygame.time.delay(1000)
                         return game_over_page(screen, chip, Tie = True) #if the board is full, show game over page with tie
 
                     #switch players
@@ -62,10 +64,12 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
 
                         #check whether big chip lead to victory
                         if check_if_winner(board, chip): #if victory, show game over page with vistory
+                            pygame.time.delay(1000)
                             return game_over_page(screen, chip)
                             
                         #check wether board is full
                         elif board_is_full(board): #if board is full, show game over page with tie
+                            pygame.time.delay(1000)
                             return game_over_page(screen, chip, Tie = True)
                         #switch players
                         chip = 'o' if chip == 'x' else 'x'
@@ -120,10 +124,12 @@ def three_players_game_page(screen, board):
 
                     #if there is a winner, jump to game over page with confetti
                     if three_players_check_if_winner(board, current_player):
+                        pygame.time.delay(1000)
                         return game_over_page(screen, current_player)
                     
                     #if the board is full, jump to game over page with showing a tie
                     if board_is_full(board):
+                        pygame.time.delay(1000)
                         return game_over_page(screen, current_player, Tie = True)
 
                     #switch players
