@@ -29,6 +29,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                 if available_square(board, row, column): #check if the square d available
                     mark_square(board, row, column, chip) #mark chips that players placed
                     draw_chips(screen, row, column, chip)
+                    pygame.display.update()
                     
                     if check_if_winner(board, chip): #check if current player wins
                         pygame.time.delay(1000)
@@ -54,6 +55,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                         mark_square(board, row, column, chip)
                         #draw the board and display chip
                         draw_chips(screen, row, column, chip, big_chip = True)
+                        pygame.display.update()
                         print(f"Placed big chip {chip.upper()} at ({row}, {column})")
 
                         #update the state whether the big chip is used
@@ -121,7 +123,8 @@ def three_players_game_page(screen, board):
                 #mark the clicked grid
                 if board[clicked_row][clicked_col] == '-':
                     mark_square(board, clicked_row, clicked_col, current_player)
-
+                    pygame.display.update()
+                    
                     #if there is a winner, jump to game over page with confetti
                     if three_players_check_if_winner(board, current_player):
                         pygame.time.delay(1000)
