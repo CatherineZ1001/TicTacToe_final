@@ -28,7 +28,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
 
                 if available_square(board, row, column): #check if the square d available
                     mark_square(board, row, column, chip) #mark chips that players placed
-                    draw_chips(screen, row, col, chip)
+                    draw_chips(screen, row, column, chip)
                     
                     if check_if_winner(board, chip): #check if current player wins
                         return game_over_page(screen, chip) #show game over page if current player wins
@@ -51,7 +51,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                         #place chip
                         mark_square(board, row, column, chip)
                         #draw the board and display chip
-                        draw_chips(screen, row, col, chip, big_chip = True)
+                        draw_chips(screen, row, column, chip, big_chip = True)
                         print(f"Placed big chip {chip.upper()} at ({row}, {column})")
 
                         #update the state whether the big chip is used
