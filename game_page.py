@@ -9,12 +9,11 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
     player1_big_chip_used = False  #check whether player 1 have used the big chip
     player2_big_chip_used = False  #check whether player 2 have used the big chip
 
-    while True:
-        #draw the board on screen
-        screen.fill(BG_COLOR)
-        draw_grid(screen)
-        draw_chips(screen, board)
+    #draw the board on screen
+    screen.fill(BG_COLOR)
+    draw_grid(screen)
 
+    while True:
         #event
         for event in pygame.event.get():
             if event.type == pygame.QUIT: #quit game
@@ -29,7 +28,8 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
 
                 if available_square(board, row, column): #check if the square d available
                     mark_square(board, row, column, chip) #mark chips that players placed
-
+                    draw_chips(screen, row, col, chip)
+                    
                     if check_if_winner(board, chip): #check if current player wins
                         return game_over_page(screen, chip) #show game over page if current player wins
                         
@@ -51,7 +51,7 @@ def game_page(screen, board, chip, size, s_size, Big_X_and_O = False):
                         #place chip
                         mark_square(board, row, column, chip)
                         #draw the board and display chip
-                        draw_chips(screen, board, big_chip = True)
+                        draw_chips(screen, row, col, chip, big_chip = True)
                         print(f"Placed big chip {chip.upper()} at ({row}, {column})")
 
                         #update the state whether the big chip is used
@@ -204,20 +204,18 @@ def draw_grid(screen):
         )
 
 #draw chips for modes with only 2 players
-def draw_chips(screen, board, big_chip = False):
+def draw_chips(screen, row, col, chip, big_chip = False):
     chip_font = pygame.font.Font(None, 400) if big_chip == True else pygame.font.Font(None, 200)
     chip_x_surf = chip_font.render("x", 0, CROSS_COLOR)
     chip_o_surf = chip_font.render("o", 0, CIRCLE_COLOR)
-
-    for row in range(BOARD_SIZE):
-        for col in range(BOARD_SIZE):
-            if board[row][col] == "x":
-                chip_x_rect = chip_x_surf.get_rect(
-                    center = (col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
-                )
-                screen.blit(chip_x_surf, chip_x_rect)
-            elif board[row][col] == "o":
-                chip_o_rect = chip_o_surf.get_rect(
-                    center=(col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
-                )
-                screen.blit(chip_o_surf, chip_o_rect)
+    
+    if chip == 'x':
+        chip_x_rect = chip_x_surf.get_rect(
+            center = (col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
+        )
+        screen.blit(chip_x_surf, chip_x_rect)
+    elif chip == 'o':
+        chip_o_rect = chip_o_surf.get_rect(
+            center = (col * SQUARE_SIZE + SQUARE_SIZE / 2, row * SQUARE_SIZE + SQUARE_SIZE / 2)
+        )
+        screen.blit(chip_o_surf, chip_o_rect)
