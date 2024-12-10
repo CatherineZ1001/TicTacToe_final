@@ -1,3 +1,4 @@
+#functions initialize_board, available_square, mark_square, board_is_full, check_if_winner are taken from code in COP3502 demonstration
 def initialize_board(GRID_SIZE):
     return [["-" for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
 
