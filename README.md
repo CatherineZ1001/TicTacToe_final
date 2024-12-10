@@ -1,5 +1,6 @@
 To run game:
     -download all the files and put all of them into one folder
+    -be sure to open the folder that contains all of the files in your IDE
     -go to game_final.py and click run
     -the game screen will pop up
 
